@@ -10,7 +10,7 @@ Only works with relative paths to working directory.
 
 ## Extension Settings
 
-By default it only links other PHP files.<br />
-This can by modified:
+By default only links other PHP files.<br />
+This can by modified in settings:
 
-* `phpFileLink.supportedExtensions`: Array of extensions
+* `phpFileLink.supportedExtensions`: Array of extensions e.g. ["php","log"]
