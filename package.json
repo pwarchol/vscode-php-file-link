@@ -1,8 +1,8 @@
 {
 	"name": "vscode-php-file-link",
 	"displayName": "PHP File Link",
-	"description": "Creates links to other PHP files declared as variables.",
-	"version": "0.1.1",
+	"description": "Creates links to other PHP files declared as strings.",
+	"version": "0.1.2",
 	"publisher": "pwarchol",
     "repository": {
         "type": "git",

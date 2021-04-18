@@ -31,16 +31,19 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
             searchExt = ["php"];
         }
 
-        let quotesRegex = /(?:"([^"]*)"|'([^']*)')/g;
+        let quotesRegex = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')/g;
         let extRegex = new RegExp(String.raw`^.*\.(${searchExt.join('|')})$`,'g');
 
         let match;
         while((match = quotesRegex.exec(line.text)) !== null) {
-            var rawPath = match[2] !== undefined ? match[2] : match[1];
+            let rawLength = match[0].length;
+            let quoteType = match[0].charAt(0);
+            let backslashRegex = new RegExp(String.raw`\\${quoteType}`, 'g');
+            let rawPath = match[0].slice(1,-1).replace(backslashRegex, quoteType);
 
             if(extRegex.test(rawPath)) {
                 let start = match.index + 1;
-                let end = match.index + rawPath.length + 1;
+                let end = match.index + rawLength;
 
                 let filePath = await this.getFullPath(currentDirectory, rawPath);
 
