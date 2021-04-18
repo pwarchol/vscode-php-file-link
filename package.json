@@ -4,16 +4,16 @@
 	"description": "Creates links to other PHP files declared as strings.",
 	"version": "0.1.2",
 	"publisher": "pwarchol",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/pwarchol/vscode-php-file-link"
-    },
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pwarchol/vscode-php-file-link"
+	},
 	"keywords": [
-        "php",
+		"php",
 		"file",
 		"link",
 		"path"
-    ],
+	],
 	"engines": {
 		"vscode": "^1.30.0"
 	},
@@ -29,7 +29,11 @@
 			"properties": {
 				"phpFileLink.supportedExtensions": {
 					"type": "array",
-					"default": ["php"],
+					"default": [
+						"php",
+						"log",
+						"ini"
+					],
 					"description": "Suported link extensions"
 				}
 			}

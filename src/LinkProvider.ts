@@ -64,7 +64,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
     }
 
     private async getFullPath(currentDirectory: string, value: string): Promise<string|false> {
-        var splitted = value.split(path.sep); 
+        var splitted = value.includes('\\') ? value.split('\\') : value.split('/'); 
         let fpath = path.resolve(currentDirectory+path.sep,...splitted);
         if (await this.fileExists(fpath)) {
             return fpath;
