@@ -1,8 +1,8 @@
 # VS Code PHP File Link
 
-## Creates links to other PHP files declared as variables.
+## Creates links to other PHP files declared as strings.
 
-Only works with relative paths to working directory.
+Works only with relative paths to working directory.
 
 <br />
 
@@ -13,4 +13,4 @@ Only works with relative paths to working directory.
 By default only links other PHP files.<br />
 This can by modified in settings:
 
-* `phpFileLink.supportedExtensions`: Array of extensions e.g. ["php","log"]
+* `phpFileLink.supportedExtensions`: array of extensions e.g. ["php","log"]
