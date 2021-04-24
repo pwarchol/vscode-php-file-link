@@ -31,7 +31,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
 
                     // Resolve paths
                     for (let [key, fileMatch] of Object.entries(processFiles)) {
-                        let fpath = path.resolve(path.parse(document.fileName).dir+path.sep,...fileMatch.value.split('/'));
+                        let fpath = path.resolve(path.parse(document.fileName).dir+path.sep,...fileMatch.value.replace(/\\/g, '/').split(path.posix.sep));
                         if(this.fileExists(fpath)) fileMatch.files.push(fpath);
                     }
 
@@ -93,7 +93,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
                         value: value,
                         ranges: [range],
                         files: [],
-                        filename: path.basename(value)
+                        filename: path.posix.basename(value.replace(/\\/g, '/'))
                     };
                 }
             }
@@ -110,11 +110,11 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
             filePath = fileMatch.files[0];
         } else if(fileMatch.files.length>1) {
 
-            var splitted = path.normalize(fileMatch.value).split('/').filter(obj => !['.','..',''].includes(obj)).reverse();
+            var splitted = path.posix.normalize(fileMatch.value.replace(/\\/g, '/')).split(path.posix.sep).filter(obj => !['.','..',''].includes(obj)).reverse();
             let results: number[] = [];
 
             for (let i = 0; i < fileMatch.files.length; i++) {
-                let tmp = fileMatch.files[i].split('/').reverse();
+                let tmp = fileMatch.files[i].split(path.sep).reverse();
                 for (let f = 0; f < tmp.length; f++) {
                     if(splitted[f] !== undefined && tmp[f]===splitted[f]) {
                         results[i] = results[i] !== undefined ? results[i]+1 : 1;
