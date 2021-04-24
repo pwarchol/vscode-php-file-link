@@ -2,7 +2,7 @@
 	"name": "vscode-php-file-link",
 	"displayName": "PHP File Link",
 	"description": "Creates links to other PHP files declared as strings.",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"publisher": "pwarchol",
 	"repository": {
 		"type": "git",
@@ -31,11 +31,24 @@
 					"type": "array",
 					"default": [
 						"php",
-						"log",
-						"ini"
+						"ini",
+						"log"
 					],
-					"description": "Suported link extensions"
-				}
+					"description": "List of file extensions that can be linked"
+				},
+				"phpFileLink.linkMode": {
+                    "type": "string",
+                    "enum": [
+                        "active_document",
+                        "scan_workspace"
+                    ],
+                    "default": "scan_workspace",
+                    "description": "Method of resolving paths to files",
+					"enumDescriptions": [
+						"Resolving path based on active document directory",
+						"Scanning all workspace files"
+					]
+                }
 			}
 		}
 	},

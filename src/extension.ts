@@ -4,7 +4,8 @@ import { LinkProvider } from './LinkProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 
-    vscode.languages.registerDocumentLinkProvider('php', new LinkProvider());
+    let linkProvider = new LinkProvider();
+    vscode.languages.registerDocumentLinkProvider('php', linkProvider);
 
 }
 

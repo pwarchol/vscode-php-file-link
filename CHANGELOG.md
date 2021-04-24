@@ -1,9 +1,11 @@
 # Change Log
 
-All notable changes to the "vscode-php-file-link" extension will be documented in this file.
+## 0.2.0
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- Scaning all workspace files for match
+- New config option `linkMode`
+- Performance optimization
 
-## [Unreleased]
+## 0.1.2
 
-- Initial release
+- Improved quotes regex
