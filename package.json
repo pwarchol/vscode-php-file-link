@@ -4,6 +4,7 @@
 	"description": "Creates links to other PHP files declared as strings.",
 	"version": "0.2.0",
 	"publisher": "pwarchol",
+	"icon": "images/logo.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/pwarchol/vscode-php-file-link"
@@ -46,7 +47,7 @@
                     "description": "Method of resolving paths to files",
 					"enumDescriptions": [
 						"Resolving path based on active document directory",
-						"Scanning all workspace files"
+						"Scanning all workspace files for match"
 					]
                 }
 			}

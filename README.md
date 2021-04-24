@@ -10,11 +10,7 @@
 * `phpFileLink.supportedExtensions`: 
     ### List of file extensions that can be linked
     ```json
-    "default": [
-        "php",
-        "ini",
-        "log"
-    ]
+    "default": ["php","ini","log"]
     ```
 
 * `phpFileLink.linkMode`: 
@@ -22,8 +18,10 @@
     ### Method of resolving paths to files
     ```json
     "enum": [
-        "active_document", // Resolving path based on active document directory
-        "scan_workspace" // Scanning all workspace files for match
+        "active_document",
+        "scan_workspace"
     ],
     "default": "scan_workspace"
     ```
+    `active_document`: Resolving path based on active document directory<br />
+    `scan_workspace`: Scanning all workspace files for match
