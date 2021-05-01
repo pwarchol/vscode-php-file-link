@@ -2,7 +2,7 @@
 	"name": "vscode-php-file-link",
 	"displayName": "PHP File Link",
 	"description": "Creates links to other PHP files declared as strings.",
-	"version": "0.2.0",
+	"version": "0.2.8",
 	"publisher": "pwarchol",
 	"icon": "images/logo.png",
 	"repository": {
@@ -37,19 +37,19 @@
 					],
 					"description": "List of file extensions that can be linked"
 				},
-				"phpFileLink.linkMode": {
-                    "type": "string",
-                    "enum": [
-                        "active_document",
-                        "scan_workspace"
-                    ],
-                    "default": "scan_workspace",
-                    "description": "Method of resolving paths to files",
-					"enumDescriptions": [
-						"Resolving path based on active document directory",
-						"Scanning all workspace files for match"
-					]
-                }
+				"phpFileLink.excludeScanFolders": {
+					"type": "array",
+					"default": [
+						"node_modules",
+						".git"
+					],
+					"description": "Excluding directories/files in workspace from being scanned"
+				},
+				"phpFileLink.cacheWorkspaceFiles": {
+					"type": "boolean",
+					"default": false,
+					"description": "Experimental! Caching list of workspace files for larger projects for better performance"
+				}
 			}
 		}
 	},
@@ -75,5 +75,7 @@
 		"typescript": "^4.1.3",
 		"vscode-test": "^1.5.0"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"php-parser": "^3.0.3"
+	}
 }

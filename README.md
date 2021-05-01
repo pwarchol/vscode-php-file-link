@@ -1,9 +1,12 @@
 # VS Code PHP File Link
 
-## Creates links to other files declared as strings.
-<br />
 
 ![](images/php-file-link.png)
+
+### This extension assigns links to files declared as strings in the active PHP document.
+### In case there are many matching files, the extension will give you a list to choose from.
+
+<br />
 
 ## Extension Settings
 
@@ -13,15 +16,14 @@
     "default": ["php","ini","log"]
     ```
 
-* `phpFileLink.linkMode`: 
-
-    ### Method of resolving paths to files
+* `phpFileLink.excludeScanFolders`: 
+    ### Excluding directories/files in workspace from being scanned
     ```json
-    "enum": [
-        "active_document",
-        "scan_workspace"
-    ],
-    "default": "scan_workspace"
+    "default": ["node_modules",".git"]
     ```
-    `active_document`: Resolving path based on active document directory<br />
-    `scan_workspace`: Scanning all workspace files for match
+
+* `phpFileLink.cacheWorkspaceFiles`: 
+    ### Caching list of workspace files for larger projects for better performance
+    ```json
+    "default": false
+    ```
