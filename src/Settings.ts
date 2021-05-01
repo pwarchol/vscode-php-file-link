@@ -14,7 +14,7 @@ export class Settings {
     };
 
     static excludeScanFolders = (): string[] => {
-        return vscode.workspace.getConfiguration().get('phpFileLink.excludeScanFolders') || ['node_modules'];
+        return vscode.workspace.getConfiguration().get('phpFileLink.excludeScanFolders') || ['node_modules','.git'];
     };
 
     static cacheWorkspaceFiles = (): boolean => {
