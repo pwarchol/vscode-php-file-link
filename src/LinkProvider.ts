@@ -63,7 +63,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
                 };
             });
 
-            vscode.window.showQuickPick(pickList).then(selected => {
+            vscode.window.showQuickPick(pickList, { matchOnDescription: true }).then(selected => {
                 if(selected) vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selected.path));
             });
         } else {
