@@ -12,12 +12,14 @@ export function activate(context: vscode.ExtensionContext) {
 
     if(Settings.cacheWorkspaceFiles()) events = initEvents(fsHelper, context);
 
-    vscode.workspace.onDidChangeConfiguration(() => {
-        if(Settings.cacheWorkspaceFiles()) {
-            if(!events) events = initEvents(fsHelper, context);
-        } else if(events) {
-            for(const e of events) e.dispose();
-            events = undefined;
+    vscode.workspace.onDidChangeConfiguration((e) => {
+        if(e.affectsConfiguration(Settings.appName)) {
+            if(Settings.cacheWorkspaceFiles()) {
+                if(!events) events = initEvents(fsHelper, context);
+            } else if(events) {
+                for(const e of events) e.dispose();
+                events = undefined;
+            }
         }
     });
 

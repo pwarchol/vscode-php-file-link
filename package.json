@@ -48,7 +48,12 @@
 				"phpFileLink.cacheWorkspaceFiles": {
 					"type": "boolean",
 					"default": false,
-					"description": "Experimental! Caching list of workspace files for larger projects for better performance"
+					"description": "Caching list of workspace files for larger projects for better performance"
+				},
+				"phpFileLink.refreshCacheEvery": {
+					"type": "integer",
+					"default": 120,
+					"description": "Refreshing cache every x seconds"
 				}
 			}
 		}

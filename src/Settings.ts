@@ -5,8 +5,14 @@ import * as vscode from 'vscode';
  */
 export class Settings {
 
+    static appName = 'phpFileLink';
+
+    static devMode = () => {
+        return vscode.env.sessionId === 'someValue.sessionId';
+    };
+
     static supportedExtensions = (): string[] => {
-        return vscode.workspace.getConfiguration().get('phpFileLink.supportedExtensions') || ['php','ini','log'];
+        return vscode.workspace.getConfiguration().get(Settings.appName+'.supportedExtensions') || ['php','ini','log'];
     };
 
     static showLinksForFilesThatDoNotExist = (): boolean => {
@@ -14,12 +20,16 @@ export class Settings {
     };
 
     static excludeScanFolders = (): string[] => {
-        return vscode.workspace.getConfiguration().get('phpFileLink.excludeScanFolders') || ['node_modules','.git'];
+        return vscode.workspace.getConfiguration().get(Settings.appName+'.excludeScanFolders') || ['node_modules','.git'];
     };
 
     static cacheWorkspaceFiles = (): boolean => {
-        let cfgVal = vscode.workspace.getConfiguration().get('phpFileLink.cacheWorkspaceFiles');
-        return typeof cfgVal === "boolean" ? cfgVal : false;
+        let cfgVal = vscode.workspace.getConfiguration().get(Settings.appName+'.cacheWorkspaceFiles');
+        return typeof cfgVal === 'boolean' ? cfgVal : false;
+    };
+
+    static refreshCacheEvery = (): number => {
+        return vscode.workspace.getConfiguration().get(Settings.appName+'.refreshCacheEvery') || 120;
     };
 
 }

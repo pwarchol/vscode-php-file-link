@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { Settings } from './Settings';
+import { ExtState } from './types';
 
 export class FileSystemHelper {
 
@@ -11,25 +12,57 @@ export class FileSystemHelper {
         this.context = context;
     }
 
-    public loadWsFiles(workspaces: vscode.Uri[]) {
+    public getExtensionState() {
+        let defaultState: ExtState = {
+            cache: {
+                sessionId: vscode.env.sessionId,
+                workspaces: {}
+            }
+        };
+        let state = this.context.workspaceState.get(Settings.appName, defaultState);
+        if(state.cache.sessionId === vscode.env.sessionId) return state;
+        else {
+            this.context.workspaceState.update(Settings.appName, defaultState);
+            return defaultState;
+        }
+    }
+
+    public updateExtWsState(fsPath: string, value: string[] | undefined) {
+        let curr = this.getExtensionState();
+        if(value) curr.cache.workspaces[fsPath] = {lastUpdate: Math.floor(Date.now()/1000), files: value};
+        else delete curr.cache.workspaces[fsPath];
+        this.context.workspaceState.update(Settings.appName, curr);
+    }
+
+    public clearExtWsState(workspaces: vscode.Uri[]) {
         for (let [key, ws] of Object.entries(workspaces)) {
-            let allWsFiles = FileSystemHelper.findFilesRecursiveSync(ws.fsPath);
-            this.context.workspaceState.update(ws.fsPath, allWsFiles);
+            this.updateExtWsState(ws.fsPath, undefined);
         }
     }
 
-    public onChangeWorkspace(event: vscode.WorkspaceFoldersChangeEvent) {
-        this.loadWsFiles(event.added.map((item) => item.uri));
-        for (let [key, ws] of Object.entries(event.removed)) {
-            this.context.workspaceState.update(ws.uri.fsPath, undefined);
+    public async getWsFiles(currentWs: vscode.WorkspaceFolder) {
+        let foundPaths: string[] | undefined;
+
+        if(Settings.cacheWorkspaceFiles()) {
+            let state = this.getExtensionState();
+            let currentWsCache = state.cache.workspaces[currentWs.uri.fsPath];
+            if(currentWsCache && currentWsCache.lastUpdate > Math.floor(Date.now()/1000)-Settings.refreshCacheEvery()) foundPaths = currentWsCache.files!;
         }
-    }
 
-    public getFromCache(ws: vscode.WorkspaceFolder) {
-        let foundPaths: string[] | undefined = this.context.workspaceState.get(ws.uri.fsPath);
-        if(!foundPaths) foundPaths = FileSystemHelper.findFilesRecursiveSync(ws.uri.fsPath);
+        if(!foundPaths) {
+            await vscode.window.withProgress({
+                location: vscode.ProgressLocation.Window,
+                cancellable: false,
+                title: ' '+Settings.appName
+            }, async () => {
+                await new Promise(resolve => setTimeout(resolve, 5000));
+                foundPaths = await FileSystemHelper.findWsFiles(currentWs);
+            });
 
-        return foundPaths;
+            if(Settings.cacheWorkspaceFiles()) this.updateExtWsState(currentWs.uri.fsPath, foundPaths);
+        }
+
+        return foundPaths ? foundPaths : [];
     }
 
     public static getTouchedWs(files: readonly vscode.Uri[]) {
@@ -54,17 +87,10 @@ export class FileSystemHelper {
         else return false;
     }
 
-    public static findFilesRecursiveSync(dir: string, findList: string[] | undefined = undefined, filelist: string[] = []) {
-        let lp = this;
-        let files = fs.readdirSync(dir);
-        filelist = filelist || [];
-        files.forEach(function(file) {
-            if (fs.statSync(path.join(dir, file)).isDirectory()) {
-                if(!Settings.excludeScanFolders().includes(file)) filelist = lp.findFilesRecursiveSync(path.join(dir, file), findList, filelist);
-            } else if(!findList || findList.includes(file)) 
-                filelist.push(path.join(dir, file));
-        });
-        return filelist;
+    public static async findWsFiles(currentWs: vscode.WorkspaceFolder) {
+        let glob = '**/*.{'+Settings.supportedExtensions().join(',')+'}';
+        let files = await vscode.workspace.findFiles(new vscode.RelativePattern(currentWs, glob));
+        return files.map((item) => item.fsPath);
     }
 
 }

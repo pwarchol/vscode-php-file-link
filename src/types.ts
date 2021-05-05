@@ -14,6 +14,18 @@ export interface AstResult {
     workingDir: boolean;
 }
 
+export interface ExtState {
+    cache: {
+        sessionId: string,
+        workspaces: { 
+            [key: string]: {
+                lastUpdate: number, 
+                files: string[] | undefined
+            }
+        }
+    }
+}
+
 export class MyLink extends vscode.DocumentLink {
 
     fileMatch: FileMatch;
