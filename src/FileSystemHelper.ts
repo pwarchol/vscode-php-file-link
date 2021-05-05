@@ -55,7 +55,6 @@ export class FileSystemHelper {
                 cancellable: false,
                 title: ' '+Settings.appName
             }, async () => {
-                await new Promise(resolve => setTimeout(resolve, 5000));
                 foundPaths = await FileSystemHelper.findWsFiles(currentWs);
             });
 

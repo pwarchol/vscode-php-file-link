@@ -50,8 +50,22 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
     public async resolveDocumentLink(link: MyLink, token: vscode.CancellationToken): Promise<MyLink|undefined> {
 
         if(link.fileMatch.files.length>0) {
-            var splitted = FileSystemHelper.userPathSplit(link.fileMatch.value);
-            vscode.commands.executeCommand('workbench.action.quickOpen', path.join(...splitted));
+            let splitted = FileSystemHelper.userPathSplit(link.fileMatch.value);
+            let label = path.join(...splitted);
+
+            let currentWorskpaceFolder = vscode.workspace.getWorkspaceFolder(link.document.uri);
+
+            let pickList = link.fileMatch.files.map((f) => {
+                return {
+                    label: label,
+                    description: currentWorskpaceFolder ? f.replace(currentWorskpaceFolder.uri.fsPath,'') : f,
+                    path: f
+                };
+            });
+
+            vscode.window.showQuickPick(pickList).then(selected => {
+                if(selected) vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selected.path));
+            });
         } else {
             vscode.window.showWarningMessage('File '+FileSystemHelper.getFileName(link.fileMatch.value)+' does not exist in this workspace.');
         }
