@@ -2,7 +2,7 @@
 	"name": "vscode-php-file-link",
 	"displayName": "PHP File Link",
 	"description": "This extension assigns links to files declared as strings in the active PHP document.",
-	"version": "0.2.8",
+	"version": "0.3.0",
 	"publisher": "pwarchol",
 	"icon": "images/logo.png",
 	"repository": {
@@ -42,10 +42,10 @@
 					"default": false,
 					"description": "Caching list of workspace files for larger projects for better performance"
 				},
-				"phpFileLink.refreshCacheEvery": {
+				"phpFileLink.refreshCacheAfter": {
 					"type": "integer",
 					"default": 120,
-					"description": "Refreshing cache every x seconds"
+					"description": "Refreshing cache after x seconds"
 				}
 			}
 		}

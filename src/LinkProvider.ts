@@ -22,7 +22,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
         if(currentWorskpaceFolder) {
 
             let parser = new DocumentParser();
-            if(processFiles = parser.process(document)) {
+            if(processFiles = await parser.process(document)) {
 
                 // Get current workspace files
                 let foundPaths: string[];
@@ -30,7 +30,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
 
                 // Assign files to processFiles base on filename
                 for (let [key, fileMatch] of Object.entries(processFiles)) {
-                    let match = foundPaths.filter(filePath => path.basename(filePath) === fileMatch.filename);
+                    let match = foundPaths.filter(filePath => FileSystemHelper.getFileName(filePath) === fileMatch.filename);
                     if(fileMatch.files.length===0) fileMatch.files = Array.from(new Set(fileMatch.files.concat(match)));
                 }
                 if(Settings.devMode()) console.log(processFiles);
@@ -67,7 +67,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
                 if(selected) vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selected.path));
             });
         } else {
-            vscode.window.showWarningMessage('File '+FileSystemHelper.getFileName(link.fileMatch.value)+' does not exist in this workspace.');
+            vscode.window.showWarningMessage('File '+link.fileMatch.filename+' does not exist in this workspace.');
         }
 
         throw 'Throwing on purpose to avoid default infobox.';

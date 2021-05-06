@@ -20,7 +20,7 @@ export class DocumentParser {
         }
     };
 
-    public process(document: vscode.TextDocument): { [key: string]: FileMatch } {
+    public async process(document: vscode.TextDocument): Promise<{ [key: string]: FileMatch; }> {
 
         let processFiles: { [key: string]: FileMatch } = {};
 
@@ -45,7 +45,7 @@ export class DocumentParser {
                 }
                 if(astResult.workingDir) {
                     let fpath = path.resolve(path.parse(document.fileName).dir+path.sep,...astResult.value.replace(/\\/g, '/').split(path.posix.sep));
-                    if(FileSystemHelper.fileExists(fpath)) processFiles[astResult.value].files.push(fpath);
+                    if(await FileSystemHelper.fileExists(fpath)) processFiles[astResult.value].files.push(fpath);
                 }
             }
         }

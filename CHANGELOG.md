@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.3.0
+
+- Switch to built-in vscode findFiles
+- fs to vscode.workspace.fs
+- Changed cache logic + refresh time
+- Added config `refreshCacheAfter`
+- Removed config `excludeScanFolders`, no needed with vscode findFiles
+- Changed file picker quickOpen to showQuickPick
+- Fix Issue #3
+
 ## 0.2.8
 
 - Removed `linkMode` - this extension always need list of all workspace files to work.

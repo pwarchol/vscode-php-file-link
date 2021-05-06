@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { Settings } from './Settings';
@@ -51,10 +50,11 @@ export class FileSystemHelper {
         if(Settings.cacheWorkspaceFiles()) {
             let state = this.getExtensionState();
             let currentWsCache = state.cache.workspaces[currentWs.uri.fsPath];
-            if(currentWsCache && currentWsCache.lastUpdate > Math.floor(Date.now()/1000)-Settings.refreshCacheEvery()) foundPaths = currentWsCache.files!;
+            if(currentWsCache && currentWsCache.lastUpdate > Math.floor(Date.now()/1000)-Settings.refreshCacheAfter()) foundPaths = currentWsCache.files!;
         }
 
         if(!foundPaths) {
+            if(Settings.devMode()) console.log('NO CACHE');
             await vscode.window.withProgress({
                 location: vscode.ProgressLocation.Window,
                 cancellable: false,
@@ -64,7 +64,7 @@ export class FileSystemHelper {
             });
 
             if(Settings.cacheWorkspaceFiles()) this.updateExtWsState(currentWs.uri.fsPath, foundPaths);
-        }
+        } else if(Settings.devMode()) console.log('CACHE');
 
         return foundPaths ? foundPaths : [];
     }
@@ -86,9 +86,13 @@ export class FileSystemHelper {
         return path.posix.basename(value.replace(/\\/g, '/'));
     }
 
-    public static fileExists(_path: string): boolean {
-        if(fs.existsSync(_path)) return fs.lstatSync(_path).isFile();
-        else return false;
+    public static async fileExists(_path: string): Promise<boolean> {
+        try {
+            let fileStat = await vscode.workspace.fs.stat(vscode.Uri.file(_path));
+            return fileStat && fileStat.type === vscode.FileType.File;
+        } catch (error) {
+            return false;
+        }
     }
 
     public static async findWsFiles(currentWs: vscode.WorkspaceFolder) {

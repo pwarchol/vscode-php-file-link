@@ -21,11 +21,11 @@ export class Settings {
 
     static cacheWorkspaceFiles = (): boolean => {
         let cfgVal = vscode.workspace.getConfiguration().get(Settings.appName+'.cacheWorkspaceFiles');
-        return typeof cfgVal === 'boolean' ? cfgVal : false;
+        return typeof cfgVal === 'boolean' ? cfgVal : true;
     };
 
-    static refreshCacheEvery = (): number => {
-        return vscode.workspace.getConfiguration().get(Settings.appName+'.refreshCacheEvery') || 120;
+    static refreshCacheAfter = (): number => {
+        return vscode.workspace.getConfiguration().get(Settings.appName+'.refreshCacheAfter') || 120;
     };
 
 }
