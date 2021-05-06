@@ -37,14 +37,6 @@
 					],
 					"description": "List of file extensions that can be linked"
 				},
-				"phpFileLink.excludeScanFolders": {
-					"type": "array",
-					"default": [
-						"node_modules",
-						".git"
-					],
-					"description": "Excluding directories/files in workspace from being scanned"
-				},
 				"phpFileLink.cacheWorkspaceFiles": {
 					"type": "boolean",
 					"default": false,

@@ -19,10 +19,6 @@ export class Settings {
         return false;
     };
 
-    static excludeScanFolders = (): string[] => {
-        return vscode.workspace.getConfiguration().get(Settings.appName+'.excludeScanFolders') || ['node_modules','.git'];
-    };
-
     static cacheWorkspaceFiles = (): boolean => {
         let cfgVal = vscode.workspace.getConfiguration().get(Settings.appName+'.cacheWorkspaceFiles');
         return typeof cfgVal === 'boolean' ? cfgVal : false;

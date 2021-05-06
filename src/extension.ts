@@ -20,6 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
                 for(const e of events) e.dispose();
                 events = undefined;
             }
+            fsHelper.clearExtState();
         }
     });
 

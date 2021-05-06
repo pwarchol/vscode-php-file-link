@@ -16,12 +16,6 @@ In case there are many matching files, the extension will give you a list to cho
     "default": ["php","ini","log"]
     ```
 
-* `phpFileLink.excludeScanFolders`: 
-    Excluding directories/files in workspace from being scanned
-    ```json
-    "default": ["node_modules",".git"]
-    ```
-
 * `phpFileLink.cacheWorkspaceFiles`: 
     Caching list of workspace files for larger projects for better performance
     ```json

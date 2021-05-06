@@ -4,6 +4,13 @@ import * as vscode from 'vscode';
 import { Settings } from './Settings';
 import { ExtState } from './types';
 
+let defaultState: ExtState = {
+    cache: {
+        sessionId: vscode.env.sessionId,
+        workspaces: {}
+    }
+};
+
 export class FileSystemHelper {
 
     context: vscode.ExtensionContext;
@@ -13,12 +20,6 @@ export class FileSystemHelper {
     }
 
     public getExtensionState() {
-        let defaultState: ExtState = {
-            cache: {
-                sessionId: vscode.env.sessionId,
-                workspaces: {}
-            }
-        };
         let state = this.context.workspaceState.get(Settings.appName, defaultState);
         if(state.cache.sessionId === vscode.env.sessionId) return state;
         else {
@@ -38,6 +39,10 @@ export class FileSystemHelper {
         for (let [key, ws] of Object.entries(workspaces)) {
             this.updateExtWsState(ws.fsPath, undefined);
         }
+    }
+
+    public clearExtState() {
+        this.context.workspaceState.update(Settings.appName, defaultState);
     }
 
     public async getWsFiles(currentWs: vscode.WorkspaceFolder) {
