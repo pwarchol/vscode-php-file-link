@@ -40,7 +40,7 @@
 				"phpFileLink.cacheWorkspaceFiles": {
 					"type": "boolean",
 					"default": false,
-					"description": "Caching list of workspace files for larger projects for better performance"
+					"description": "Caching list of workspace files"
 				},
 				"phpFileLink.refreshCacheAfter": {
 					"type": "integer",
