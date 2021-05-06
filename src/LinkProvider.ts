@@ -77,9 +77,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
         const results: MyLink[] = [];
         let filePath: string | undefined | true;
 
-        if(fileMatch.files.length===1) {
-            filePath = fileMatch.files[0];
-        } else if(fileMatch.files.length>1) {
+        if(fileMatch.files.length>=1) {
 
             var splitted = FileSystemHelper.userPathSplit(fileMatch.value).reverse();
             let results: number[] = [];
@@ -94,10 +92,11 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
             }
 
             let max = Math.max.apply(Math, results);
-            let count = results.filter((i) => i === max).length;
-
-            if(count===1) filePath = fileMatch.files[results.indexOf(max)];
-            else filePath = true;
+            if(max>=splitted.length) {
+                let count = results.filter((i) => i === max).length;
+                if(count===1) filePath = fileMatch.files[results.indexOf(max)];
+                else filePath = true;
+            }
 
         }
 
