@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.1
+
+- Multiple files to pick, fix for path match
+
 ## 0.3.0
 
 - Switch to built-in vscode findFiles

@@ -95,7 +95,10 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
             if(max>=splitted.length) {
                 let count = results.filter((i) => i === max).length;
                 if(count===1) filePath = fileMatch.files[results.indexOf(max)];
-                else filePath = true;
+                else {
+                    fileMatch.files = fileMatch.files.filter((file, i) => results[i]>=splitted.length);
+                    filePath = true;
+                }
             }
 
         }
