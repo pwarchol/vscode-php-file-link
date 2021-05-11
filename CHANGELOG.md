@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.2
+
+- Fix parsing php short tags #5
+
 ## 0.3.1
 
 - Multiple files to pick, fix for path match
