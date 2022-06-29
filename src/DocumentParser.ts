@@ -9,7 +9,7 @@ export class DocumentParser {
     parserSettings = {
         parser: {
             locations: true,
-            extractDoc: false,
+            extractDoc: true,
             suppressErrors: true
         },
         ast: {
@@ -28,8 +28,10 @@ export class DocumentParser {
         let astObj = this.parse(document);
 
         if(astObj) {
-            // find AstResult
-            let astResults = this.find(astObj);
+            let astResults: AstResult[] = [];
+
+            astResults.push(...this.findString(astObj));
+            astResults.push(...this.findDoc(astObj));
 
             // map AstResult to FileMatch
             for (let [i,astResult] of Object.entries(astResults)) {
@@ -84,7 +86,7 @@ export class DocumentParser {
         return extensionExists;
     };
 
-    public find(currNode: any, keys: string[] = [], output: AstResult[] = [], mainNode: any = currNode) {
+    public findString(currNode: any, keys: string[] = [], output: AstResult[] = [], mainNode: any = currNode) {
         let parentKey = keys;
         if(this.isObject(currNode)) {
             Object.keys(currNode).forEach((key) => {
@@ -115,7 +117,40 @@ export class DocumentParser {
                             });
                         }
                     } else {
-                        output.concat(this.find(currNode[key], keys.concat(key), output, mainNode));
+                        output.concat(this.findString(currNode[key], keys.concat(key), output, mainNode));
+                    }
+                }
+            });
+        }
+        return output;
+    };
+
+    public findDoc(currNode: any, keys: string[] = [], output: AstResult[] = [], mainNode: any = currNode) {
+        if(this.isObject(currNode)) {
+            Object.keys(currNode).forEach((key) => {
+                if(this.isObject(currNode[key])) {
+                    if(this.checkKind(currNode[key], 'commentblock')) {
+                        const lines = currNode[key].value.split(/\r?\n/).filter((element: string) => element);
+                        let match, startLine = currNode[key].loc.start.line;
+                        let docRegex = new RegExp(String.raw`(([a-zA-Z0-9\/\\_-]*)\.(${Settings.supportedExtensions().join('|')}))`,'gm');
+
+                        for(var i = 0; i < lines.length; i++) {
+                            while (match = docRegex.exec(lines[i])) {
+                                if(this.checkExt(match[0])) {
+                                    output.push({
+                                        value: match[0],
+                                        astPath: keys.concat(key),
+                                        range: new vscode.Range(
+                                            new vscode.Position(startLine+i-1, match.index), 
+                                            new vscode.Position(startLine+i-1, match.index+match[0].length)
+                                        ),
+                                        workingDir: false
+                                    });
+                                }
+                            }
+                        }
+                    } else {
+                        output.concat(this.findDoc(currNode[key], keys.concat(key), output, mainNode));
                     }
                 }
             });
