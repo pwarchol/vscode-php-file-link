@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.0
+
+- DocBlock support
+
 ## 0.3.2
 
 - Fix parsing php short tags #5
