@@ -15,15 +15,9 @@ export interface AstResult {
 }
 
 export interface ExtState {
-    cache: {
-        sessionId: string,
-        workspaces: { 
-            [key: string]: {
-                lastUpdate: number, 
-                files: string[] | undefined
-            }
-        }
-    }
+    lastUpdate: number, 
+    findInProgress: boolean,
+    files: string[]
 }
 
 export class MyLink extends vscode.DocumentLink {

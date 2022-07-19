@@ -7,12 +7,8 @@ export class Settings {
 
     static appName = 'phpFileLink';
 
-    static devMode = () => {
-        return vscode.env.sessionId === 'someValue.sessionId';
-    };
-
     static supportedExtensions = (): string[] => {
-        return vscode.workspace.getConfiguration().get(Settings.appName+'.supportedExtensions') || ['php','ini','log'];
+        return vscode.workspace.getConfiguration().get(Settings.appName+'.supportedExtensions', ['php','ini','log']);
     };
 
     static showLinksForFilesThatDoNotExist = (): boolean => {
@@ -20,12 +16,11 @@ export class Settings {
     };
 
     static cacheWorkspaceFiles = (): boolean => {
-        let cfgVal = vscode.workspace.getConfiguration().get(Settings.appName+'.cacheWorkspaceFiles');
-        return typeof cfgVal === 'boolean' ? cfgVal : true;
+        return vscode.workspace.getConfiguration().get(Settings.appName+'.cacheWorkspaceFiles', true);
     };
 
     static refreshCacheAfter = (): number => {
-        return vscode.workspace.getConfiguration().get(Settings.appName+'.refreshCacheAfter') || 120;
+        return vscode.workspace.getConfiguration().get(Settings.appName+'.refreshCacheAfter', 120);
     };
 
 }

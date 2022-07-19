@@ -132,7 +132,7 @@ export class DocumentParser {
                     if(this.checkKind(currNode[key], 'commentblock')) {
                         const lines = currNode[key].value.split(/\r?\n/).filter((element: string) => element);
                         let match, startLine = currNode[key].loc.start.line;
-                        let docRegex = new RegExp(String.raw`(([a-zA-Z0-9\/\\_-]*)\.(${Settings.supportedExtensions().join('|')}))`,'gm');
+                        let docRegex = new RegExp(String.raw`(([a-zA-Z0-9\/\\_.-]*)\.(${Settings.supportedExtensions().join('|')}))`,'gm');
 
                         for(var i = 0; i < lines.length; i++) {
                             while (match = docRegex.exec(lines[i])) {

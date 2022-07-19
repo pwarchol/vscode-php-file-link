@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.1
+
+- Support PHP 8.0, 8.1
+- DocBlock regex improvements
+- Cache improvements
+
 ## 1.0.0
 
 - DocBlock support

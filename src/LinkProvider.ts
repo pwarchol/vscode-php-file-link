@@ -23,17 +23,17 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
 
             let parser = new DocumentParser();
             if(processFiles = await parser.process(document)) {
+                if(token.isCancellationRequested) return;
 
                 // Get current workspace files
-                let foundPaths: string[];
-                foundPaths = await this.fsHelper.getWsFiles(currentWorskpaceFolder);
+                let foundPaths: string[] = await this.fsHelper.getWsFiles(currentWorskpaceFolder, token);
+                if(token.isCancellationRequested) return;
 
                 // Assign files to processFiles base on filename
                 for (let [key, fileMatch] of Object.entries(processFiles)) {
                     let match = foundPaths.filter(filePath => FileSystemHelper.getFileName(filePath) === fileMatch.filename);
                     if(fileMatch.files.length===0) fileMatch.files = Array.from(new Set(fileMatch.files.concat(match)));
                 }
-                if(Settings.devMode()) console.log(processFiles);
 
                 // Creating DocumentLinks
                 for (let [key, fileMatch] of Object.entries(processFiles)) {
