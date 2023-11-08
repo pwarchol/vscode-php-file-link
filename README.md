@@ -14,7 +14,7 @@ Default cache is set to avoid scaning all workspace dirs every time user is typi
 Cache is cleared when files/dirs are being changed in vscode but I can't detect other users or apps modifying workspace files.<br />
 Cache is not refreshing in background, only when is needed.<br />
 
-## Extension Settings
+## 📋 Extension Settings
 
 * `phpFileLink.supportedExtensions`: 
     List of file extensions that can be linked
@@ -33,3 +33,5 @@ Cache is not refreshing in background, only when is needed.<br />
     ```json
     "default": 120
     ```
+## 👋 Special thanks / Credits
+Thanks to [Robin Delattre](https://github.com/RobinDev) for PR [Add link to line number](https://github.com/pwarchol/vscode-php-file-link/pull/14).

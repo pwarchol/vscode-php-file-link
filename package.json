@@ -2,7 +2,7 @@
 	"name": "vscode-php-file-link",
 	"displayName": "PHP File Link",
 	"description": "This extension allows to assign links to files declared as strings in the active PHP document.",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"publisher": "pwarchol",
 	"icon": "images/logo.png",
 	"repository": {

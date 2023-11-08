@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.0
+
+- DocBlock, add link to line number if defined
+
 ## 1.0.1
 
 - Support PHP 8.0, 8.1
