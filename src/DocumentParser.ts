@@ -16,7 +16,7 @@ export class DocumentParser {
             withPositions: true
         },
         lexer: {
-            shortTags: true
+            short_tags: true
         }
     };
 
