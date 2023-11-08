@@ -9,13 +9,14 @@ export interface FileMatch {
 
 export interface AstResult {
     value: string;
+    line: number;
     astPath: string[];
     range: vscode.Range;
     workingDir: boolean;
 }
 
 export interface ExtState {
-    lastUpdate: number, 
+    lastUpdate: number,
     findInProgress: boolean,
     files: string[]
 }
