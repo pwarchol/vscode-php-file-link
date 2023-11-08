@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 export interface FileMatch {
     value: string;
+    line: number;
     ranges: vscode.Range[];
     files: string[];
     filename: string;
@@ -27,6 +28,7 @@ export class MyLink extends vscode.DocumentLink {
     document: vscode.TextDocument;
 
     constructor(range: vscode.Range, fileMatch: FileMatch, document: vscode.TextDocument, target?: vscode.Uri) {
+        console.log(target);
         super(range,target);
         this.fileMatch = fileMatch;
         this.document = document;

@@ -106,7 +106,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
         }
 
         if(filePath || Settings.showLinksForFilesThatDoNotExist()) {
-            let uri = filePath === true || !filePath ? undefined : vscode.Uri.file(filePath);
+            let uri = filePath === true || !filePath ? undefined : vscode.Uri.file(filePath).with({ fragment: `L${fileMatch.line}` });
             fileMatch.ranges.forEach(range => {
                 results.push(new MyLink(range, fileMatch, document, uri));
             });

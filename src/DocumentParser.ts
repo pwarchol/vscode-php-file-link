@@ -40,6 +40,7 @@ export class DocumentParser {
                 } else {
                     processFiles[astResult.value] = {
                         value: astResult.value,
+                        line: astResult.line,
                         ranges: [astResult.range],
                         files: [],
                         filename: FileSystemHelper.getFileName(astResult.value)
@@ -134,16 +135,14 @@ export class DocumentParser {
                         const lines = currNode[key].value.split(/\r?\n/).filter((element: string) => element);
                         let match, startLine = currNode[key].loc.start.line;
                         let docRegex = new RegExp(String.raw`((([a-zA-Z0-9\/\\_.-]*)\.(${Settings.supportedExtensions().join('|')}))(:([0-9]+))?)`,'gm');
-
                         for(var i = 0; i < lines.length; i++) {
                             while (match = docRegex.exec(lines[i])) {
-                                const path = match[1];
-                                startLine = parseInt(match[6]) || startLine;
+                                const path = match[2];
                                 if(this.checkExt(path)) {
                                     output.push({
                                         value: path,
                                         astPath: keys.concat(key),
-                                        line: startLine,
+                                        line: parseInt(match[6]) || 0,
                                         range: new vscode.Range(
                                             new vscode.Position(startLine+i-1, match.index),
                                             new vscode.Position(startLine+i-1, match.index+path.length)
