@@ -64,7 +64,9 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
             });
 
             vscode.window.showQuickPick(pickList, { matchOnDescription: true }).then(selected => {
-                if(selected) vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selected.path));
+                if(selected) {
+                    vscode.commands.executeCommand('vscode.open', vscode.Uri.file(selected.path));
+                }
             });
         } else {
             vscode.window.showWarningMessage('File '+link.fileMatch.filename+' does not exist in this workspace.');
@@ -104,7 +106,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
         }
 
         if(filePath || Settings.showLinksForFilesThatDoNotExist()) {
-            let uri = filePath === true || !filePath ? undefined : vscode.Uri.file(filePath);
+            let uri = filePath === true || !filePath ? undefined : vscode.Uri.file(filePath).with({ fragment: `L${fileMatch.line}` });
             fileMatch.ranges.forEach(range => {
                 results.push(new MyLink(range, fileMatch, document, uri));
             });

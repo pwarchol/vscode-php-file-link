@@ -40,6 +40,7 @@ export class DocumentParser {
                 } else {
                     processFiles[astResult.value] = {
                         value: astResult.value,
+                        line: astResult.line,
                         ranges: [astResult.range],
                         files: [],
                         filename: FileSystemHelper.getFileName(astResult.value)
@@ -51,12 +52,12 @@ export class DocumentParser {
                 }
             }
         }
-        
+
         return processFiles;
     }
 
     public parse(document: vscode.TextDocument): object | false {
-        
+
         let engine = require('php-parser');
         let parser = new engine(this.parserSettings);
         let parsedFile;
@@ -105,13 +106,14 @@ export class DocumentParser {
                                 }
                             }
                             let range = new vscode.Range(
-                                new vscode.Position(currNode[key].loc.start.line-1, currNode[key].loc.start.column+1), 
+                                new vscode.Position(currNode[key].loc.start.line-1, currNode[key].loc.start.column+1),
                                 new vscode.Position(currNode[key].loc.end.line-1, currNode[key].loc.end.column-1)
                             );
 
                             output.push({
                                 value: currNode[key].value,
                                 astPath: keys.concat(key),
+                                line: 0,
                                 range: range,
                                 workingDir: workingDir
                             });
@@ -132,17 +134,18 @@ export class DocumentParser {
                     if(this.checkKind(currNode[key], 'commentblock')) {
                         const lines = currNode[key].value.split(/\r?\n/).filter((element: string) => element);
                         let match, startLine = currNode[key].loc.start.line;
-                        let docRegex = new RegExp(String.raw`(([a-zA-Z0-9\/\\_.-]*)\.(${Settings.supportedExtensions().join('|')}))`,'gm');
-
+                        let docRegex = new RegExp(String.raw`((([a-zA-Z0-9\/\\_.-]*)\.(${Settings.supportedExtensions().join('|')}))(:([0-9]+))?)`,'gm');
                         for(var i = 0; i < lines.length; i++) {
                             while (match = docRegex.exec(lines[i])) {
-                                if(this.checkExt(match[0])) {
+                                const path = match[2];
+                                if(this.checkExt(path)) {
                                     output.push({
-                                        value: match[0],
+                                        value: path,
                                         astPath: keys.concat(key),
+                                        line: parseInt(match[6]) || 0,
                                         range: new vscode.Range(
-                                            new vscode.Position(startLine+i-1, match.index), 
-                                            new vscode.Position(startLine+i-1, match.index+match[0].length)
+                                            new vscode.Position(startLine+i-1, match.index),
+                                            new vscode.Position(startLine+i-1, match.index+path.length)
                                         ),
                                         workingDir: false
                                     });
