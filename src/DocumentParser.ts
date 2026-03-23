@@ -119,7 +119,7 @@ export class DocumentParser {
                             });
                         }
                     } else {
-                        output.concat(this.findString(currNode[key], keys.concat(key), output, mainNode));
+                        this.findString(currNode[key], keys.concat(key), output, mainNode);
                     }
                 }
             });
@@ -153,7 +153,7 @@ export class DocumentParser {
                             }
                         }
                     } else {
-                        output.concat(this.findDoc(currNode[key], keys.concat(key), output, mainNode));
+                        this.findDoc(currNode[key], keys.concat(key), output, mainNode);
                     }
                 }
             });
