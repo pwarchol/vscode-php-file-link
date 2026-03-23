@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.1
+
+- Update security vulnerabilities
+- Update php-parser to 3.5
+- Optimize output building
+
 ## 1.1.0
 
 - DocBlock, add link to line number if defined
